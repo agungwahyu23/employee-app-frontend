@@ -16,13 +16,15 @@ const defaultValues = {
   subdistrict: '',
   village: '',
   address: '',
+  email: '',
   username: '',
   password: '',
-  type: '',
+  type: [],
   start_contract: '',
   end_contract: '',
   marriage_status: '',
   doctor_code_bpjs: '',
+  position: '',
 };
 
 const EmployeeForm = ({ selected, onSuccess }) => {
@@ -39,6 +41,7 @@ const EmployeeForm = ({ selected, onSuccess }) => {
   });
 
   useEffect(() => {
+    console.log('Form errors:', errors);
     if (selected) {
       const { ...data } = selected;
       reset(data);
@@ -61,7 +64,9 @@ const EmployeeForm = ({ selected, onSuccess }) => {
 
     try {
       if (selected) {
-        await updateEmployee(selected.id, formData);
+        console.log(selected);
+        
+        await updateEmployee(selected.nik, formData);
         alert('Data diperbarui!');
       } else {
         await createEmployee(formData);
