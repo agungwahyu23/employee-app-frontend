@@ -1,11 +1,22 @@
 import React from 'react';
+import { useEffect, useState } from 'react';
+import { getEmployees } from '../services/employeeService';
 
-const EmployeeList = () => {
-  // nanti data di-fetch pakai axios
-  const employees = [
-    { id: 1, name: 'Agung', role: 'Perawat', active: true },
-    { id: 2, name: 'Wahyu', role: 'Perawat', active: false },
-  ];
+    const EmployeeList = ({onSelect}) => {
+        const [employees, setEmployees] = useState([]);
+        
+        const fetchData = async () => {
+            try {
+                const res = await getEmployees();
+                setEmployees(res.data);
+            } catch (err) {
+                alert('Gagal mengambil data');
+            }
+        };
+
+        useEffect(() => {
+            fetchData();
+        }, []);
 
   return (
     <div className="col-md-4 mb-4">
@@ -83,7 +94,7 @@ const EmployeeList = () => {
                     </thead>
                     <tbody>
                         {employees.map((emp, index) => (
-                        <tr key={emp.id}>
+                        <tr key={emp.nik}>
                             <td>{index + 1}</td>
                             <td>
                             <b>{emp.name}</b>
@@ -95,7 +106,7 @@ const EmployeeList = () => {
                             </span>
                             </td>
                             <td className="text-center">
-                            <button className="btn btn-link text-primary p-0">
+                            <button onClick={() => onSelect(emp)} className="btn btn-link text-primary p-0">
                                 <i className="bi bi-arrow-right-circle-fill fs-4"></i>
                             </button>
                             </td>
